@@ -30,7 +30,7 @@ class EditClothing extends Component {
       })
       .catch(err => console.error(err))
   }
-  
+
   deleteClothing = () => {
     const { selected, clothes } = this.props
     const clothingArticles = clothes[selected.placement]
@@ -46,7 +46,7 @@ class EditClothing extends Component {
   isDirty = obj => {
     const newObj = {};
     for (let key in obj) {
-      if (obj[key]) newObj[key] = obj[key]
+      if (obj[key]) newObj[key] = obj[key];
     }
     return newObj;
   }

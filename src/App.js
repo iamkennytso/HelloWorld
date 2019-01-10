@@ -28,35 +28,32 @@ class App extends Component {
     this.state = INITIAL_STATE;
   };
 
-  componentDidMount () {
-    this.getClothes()
+  componentWillMount () {
+    this.getClothes();
   };
 
   getClothes = async () => {
-    console.log('gettingClothes')
     try {
       const { data: clothes } = await axios.get('https://boiler010919-81804.firebaseio.com/clothes.json');
-      const { head, top, legs, feet } = clothes
+      const { head, top, legs, feet } = clothes;
       this.setState({ head, top, legs, feet, clothes });
     } catch (err) {
-      console.error(err)
+      console.error(err);
       this.setState({ hello: 'localHost'});
     }
   }
+
   handleClothingClick = (selected, placement) => {
-    selected.placement = placement
-    this.setState({selected})
+    selected.placement = placement;
+    this.setState({ selected });
   }
 
   handleViewOptionChange = field => e => {
     const { head, top, legs, feet } = this.state;
-    console.log(field)
-    console.log(e.target.value)
-    const filteredHead = head.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
-    const filteredtop = top.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
-    const filteredlegs = legs.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
-    const filteredfeet = feet.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
-    console.log(filteredHead)
+    const filteredHead = head.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1);
+    const filteredtop = top.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1);
+    const filteredlegs = legs.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1);
+    const filteredfeet = feet.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1);
     this.setState({
       head: filteredHead,
       top: filteredtop,
@@ -65,23 +62,26 @@ class App extends Component {
       viewOptions: {
         ...this.state.viewOptions,
         [field]: e.target.value
-      }
-    })
+      },
+    });
   }
+
   clearViewOptions = () => {
     const { head, top, legs, feet } = this.state.clothes;
     this.setState({ head, top, legs, feet, viewOptions: INITIAL_STATE.viewOptions });
   }
+
   switchStatementRouter = () => {
-    const { head, top, legs, feet, selected } = this.state
+    const { head, top, legs, feet } = this.state;
     switch(this.state.nav) {
       case 'view':
-        return <ViewPage clothes={ {head, top, legs, feet} } clothingClick={this.handleClothingClick} />
+        return <ViewPage clothes={ {head, top, legs, feet} } clothingClick={this.handleClothingClick} />;
+      default:
+        return null;
     }
   }
   
   render() {
-    console.log(this.state)
     const { head, top, legs, feet, selected, viewOptions } = this.state
     return (
       <div className="App">
@@ -101,7 +101,6 @@ class App extends Component {
           clothes={ {head, top, legs, feet} } 
           getClothes={this.getClothes} 
         />
-        
       </div>
     );
   }

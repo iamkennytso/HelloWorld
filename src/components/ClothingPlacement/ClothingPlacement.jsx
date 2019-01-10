@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './ClothingPlacement.scss';
 import ClothingArticle from '../ClothingArticle/ClothingArticle';
-import { timingSafeEqual } from 'crypto';
 
 const INITIAL_STATE = {
   show: true

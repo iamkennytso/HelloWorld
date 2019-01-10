@@ -6,8 +6,6 @@ const ViewOptions = ({options, handleViewOptionChange, clearViewOptions}) => {
     <div className='ViewOptions'>
       I want to see:
       {Object.keys(options).map(option => {
-        console.log(option)
-        console.log(options[option])
         return <div key={option}>
           {option}: <input type='text' name='name' value={options[option]} onChange={handleViewOptionChange(option)} />
         </div>

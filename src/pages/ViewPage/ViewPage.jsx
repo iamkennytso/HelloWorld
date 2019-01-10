@@ -3,7 +3,7 @@ import './ViewPage.scss';
 
 import ClothingPlacement from '../../components/ClothingPlacement/ClothingPlacement'
 
-const ViewPage = ({clothes}) => {
+const ViewPage = ({clothes, clothingClick}) => {
   return (
     <div className='ViewPage'>
       {Object.keys(clothes).map(clothingPlacement => {
@@ -11,6 +11,7 @@ const ViewPage = ({clothes}) => {
           placement={clothingPlacement}
           clothes={clothes[clothingPlacement]}
           key={clothingPlacement}
+          clothingClick={clothingClick}
         />
       })}
     </div>

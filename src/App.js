@@ -3,14 +3,16 @@ import axios from 'axios'
 import './App.scss';
 
 import ViewPage from './pages/ViewPage/ViewPage'
+import AddClothing from './components/AddClothing/AddClothing'
+import EditClothing from './components/EditClothing/EditClothing'
 
 const INITIAL_STATE = {
   head: [],
   top: [],
   legs: [],
   feet: [],
-  current: [],
-  nav: 'view'
+  selected: null,
+  nav: 'view',
 };
 
 class App extends Component {
@@ -24,6 +26,7 @@ class App extends Component {
   };
 
   getClothes = async () => {
+    console.log('gettingClothes')
     try {
       const { data: clothes } = await axios.get('https://boiler010919-81804.firebaseio.com/clothes.json');
       const { head, top, legs, feet } = clothes
@@ -33,18 +36,35 @@ class App extends Component {
       this.setState({ hello: 'localHost'});
     }
   }
-
+  handleClothingClick = (selected, placement) => {
+    selected.placement = placement
+    this.setState({selected})
+  }
   switchStatementRouter = () => {
-    const { head, top, legs, feet, current } = this.state
+    const { head, top, legs, feet, selected } = this.state
     switch(this.state.nav) {
       case 'view':
-        return <ViewPage clothes={ {head, top, legs, feet,} } />
+        return <ViewPage clothes={ {head, top, legs, feet} } clothingClick={this.handleClothingClick} />
     }
   }
+  
   render() {
+    const { head, top, legs, feet, selected } = this.state
     return (
       <div className="App">
+        
         {this.switchStatementRouter()}
+        <AddClothing 
+          clothes={ {head, top, legs, feet} } 
+          getClothes={this.getClothes}
+        />
+        <br/> <br/>
+        <EditClothing 
+          selected={selected} 
+          clothes={ {head, top, legs, feet} } 
+          getClothes={this.getClothes} 
+        />
+        
       </div>
     );
   }

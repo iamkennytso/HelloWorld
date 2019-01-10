@@ -5,14 +5,21 @@ import './App.scss';
 import ViewPage from './pages/ViewPage/ViewPage'
 import AddClothing from './components/AddClothing/AddClothing'
 import EditClothing from './components/EditClothing/EditClothing'
+import ViewOptions from './components/ViewOptions/ViewOptions'
 
 const INITIAL_STATE = {
+  clothes: {},
   head: [],
   top: [],
   legs: [],
   feet: [],
   selected: null,
   nav: 'view',
+  viewOptions: {
+    warmth: null,
+    formal: null,
+    color: null,
+  }
 };
 
 class App extends Component {
@@ -30,7 +37,7 @@ class App extends Component {
     try {
       const { data: clothes } = await axios.get('https://boiler010919-81804.firebaseio.com/clothes.json');
       const { head, top, legs, feet } = clothes
-      this.setState({ head, top, legs, feet });
+      this.setState({ head, top, legs, feet, clothes });
     } catch (err) {
       console.error(err)
       this.setState({ hello: 'localHost'});
@@ -39,6 +46,31 @@ class App extends Component {
   handleClothingClick = (selected, placement) => {
     selected.placement = placement
     this.setState({selected})
+  }
+
+  handleViewOptionChange = field => e => {
+    const { head, top, legs, feet } = this.state;
+    console.log(field)
+    console.log(e.target.value)
+    const filteredHead = head.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
+    const filteredtop = top.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
+    const filteredlegs = legs.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
+    const filteredfeet = feet.filter(item => String(item[field]).indexOf(String(e.target.value)) > -1)
+    console.log(filteredHead)
+    this.setState({
+      head: filteredHead,
+      top: filteredtop,
+      legs: filteredlegs,
+      feet: filteredfeet,
+      viewOptions: {
+        ...this.state.viewOptions,
+        [field]: e.target.value
+      }
+    })
+  }
+  clearViewOptions = () => {
+    const { head, top, legs, feet } = this.state.clothes;
+    this.setState({ head, top, legs, feet, viewOptions: INITIAL_STATE.viewOptions });
   }
   switchStatementRouter = () => {
     const { head, top, legs, feet, selected } = this.state
@@ -49,10 +81,15 @@ class App extends Component {
   }
   
   render() {
-    const { head, top, legs, feet, selected } = this.state
+    console.log(this.state)
+    const { head, top, legs, feet, selected, viewOptions } = this.state
     return (
       <div className="App">
-        
+        <ViewOptions 
+          options={viewOptions} 
+          handleViewOptionChange={this.handleViewOptionChange}
+          clearViewOptions={this.clearViewOptions}
+        />
         {this.switchStatementRouter()}
         <AddClothing 
           clothes={ {head, top, legs, feet} } 

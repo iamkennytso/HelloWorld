@@ -30,6 +30,7 @@ class EditClothing extends Component {
       })
       .catch(err => console.error(err))
   }
+  
   deleteClothing = () => {
     const { selected, clothes } = this.props
     const clothingArticles = clothes[selected.placement]
@@ -41,6 +42,7 @@ class EditClothing extends Component {
       })
       .catch(err => console.error(err))
   }
+
   isDirty = obj => {
     const newObj = {};
     for (let key in obj) {
@@ -48,6 +50,7 @@ class EditClothing extends Component {
     }
     return newObj;
   }
+
   placementSelect = () => <select onChange={this.handleChange('placement')}>
     <option value="head">Head</option>
     <option value="top">Top</option>

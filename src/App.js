@@ -16,9 +16,9 @@ const INITIAL_STATE = {
   selected: null,
   nav: 'view',
   viewOptions: {
-    warmth: null,
-    formal: null,
-    color: null,
+    warmth: '',
+    formal: '',
+    color: '',
   }
 };
 

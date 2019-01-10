@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import './App.scss';
 
+import ViewPage from './pages/ViewPage/ViewPage'
+
 const INITIAL_STATE = {
   head: [],
   top: [],
   legs: [],
   feet: [],
+  current: [],
+  nav: 'view'
 };
 
 class App extends Component {
@@ -30,10 +34,17 @@ class App extends Component {
     }
   }
 
+  switchStatementRouter = () => {
+    const { head, top, legs, feet, current } = this.state
+    switch(this.state.nav) {
+      case 'view':
+        return <ViewPage clothes={ {head, top, legs, feet,} } />
+    }
+  }
   render() {
     return (
       <div className="App">
-        <pre><code>{JSON.stringify(this.state, null, 4)}</code></pre>
+        {this.switchStatementRouter()}
       </div>
     );
   }

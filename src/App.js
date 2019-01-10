@@ -3,7 +3,10 @@ import axios from 'axios'
 import './App.scss';
 
 const INITIAL_STATE = {
-  hello: ''
+  head: [],
+  top: [],
+  legs: [],
+  feet: [],
 };
 
 class App extends Component {
@@ -13,13 +16,14 @@ class App extends Component {
   };
 
   componentDidMount () {
-    this.getHello()
+    this.getClothes()
   };
 
-  getHello = async () => {
+  getClothes = async () => {
     try {
-      const { data: hello } = await axios.get('https://boiler010919-81804.firebaseio.com/hello.json');
-      this.setState({ hello });
+      const { data: clothes } = await axios.get('https://boiler010919-81804.firebaseio.com/clothes.json');
+      const { head, top, legs, feet } = clothes
+      this.setState({ head, top, legs, feet });
     } catch (err) {
       console.error(err)
       this.setState({ hello: 'localHost'});
@@ -29,7 +33,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        Hello {this.state.hello}
+        <pre><code>{JSON.stringify(this.state, null, 4)}</code></pre>
       </div>
     );
   }
